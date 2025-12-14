@@ -1,0 +1,7 @@
+-- Create dedicated database for AIDRE
+CREATE DATABASE IF NOT EXISTS AIDRE_DB;
+USE DATABASE AIDRE_DB;
+
+-- Create schemas
+CREATE SCHEMA IF NOT EXISTS BUSINESS_DATA;   -- Tables we monitor
+CREATE SCHEMA IF NOT EXISTS AIDRE_INTERNAL;  -- Our metadata/state
