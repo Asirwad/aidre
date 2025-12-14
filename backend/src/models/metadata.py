@@ -10,7 +10,7 @@ class ColumnInfo(BaseModel):
     is_nullable: bool
     ordinal_position: int
 
-class TableMetaData(BaseModel):
+class TableMetadata(BaseModel):
     """Complete metadata for a monitored table."""
     database: str
     schema_name: str = Field(alias="schema")
