@@ -3,12 +3,23 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional, List, AsyncGenerator
+from src.data import MetadataCollector
 
 from src.agents import run_reliability_check, ask_reliability_question
 from src.agents.graph import reliability_graph
 from src.agents.graph import AgentPhase
 
 router = APIRouter()
+
+@router.get("/tables", response_model=List[str])
+async def get_tables():
+    """Get a list of all available tables in the monitored schema."""
+    try:
+        # Use schema "BUSINESS_DATA" as seen in scanner_agent.py
+        collector = MetadataCollector(schema="BUSINESS_DATA")
+        return collector.get_all_tables()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 class AskRequest(BaseModel):
     question: str
