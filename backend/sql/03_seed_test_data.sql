@@ -25,14 +25,14 @@ INSERT INTO dim_users (user_id, email, full_name, account_status, created_at, up
 -- Last event was 3 days ago
 -- ============================================
 INSERT INTO fact_events (event_id, event_type, user_id, event_timestamp, event_data) VALUES
-('E001', 'login', 'U001', DATEADD(day, -3, CURRENT_TIMESTAMP()), '{"device": "mobile"}'),
-('E002', 'purchase', 'U001', DATEADD(day, -3, CURRENT_TIMESTAMP()), '{"amount": 99.99}'),
-('E003', 'login', 'U002', DATEADD(day, -3, CURRENT_TIMESTAMP()), '{"device": "desktop"}'),
-('E004', 'click', 'U002', DATEADD(day, -3, CURRENT_TIMESTAMP()), '{"page": "home"}'),
-('E005', 'logout', 'U001', DATEADD(day, -3, CURRENT_TIMESTAMP()), '{}'),
-('E006', 'login', 'U005', DATEADD(day, -4, CURRENT_TIMESTAMP()), '{"device": "tablet"}'),
-('E007', 'purchase', 'U007', DATEADD(day, -4, CURRENT_TIMESTAMP()), '{"amount": 149.99}'),
-('E008', 'click', 'U009', DATEADD(day, -5, CURRENT_TIMESTAMP()), '{"page": "products"}');
+('E001', 'login', 'U001', DATEADD(day, -3, CURRENT_TIMESTAMP()), PARSE_JSON('{"device": "mobile"}')),
+('E002', 'purchase', 'U001', DATEADD(day, -3, CURRENT_TIMESTAMP()), PARSE_JSON('{"amount": 99.99}')),
+('E003', 'login', 'U002', DATEADD(day, -3, CURRENT_TIMESTAMP()), PARSE_JSON('{"device": "desktop"}')),
+('E004', 'click', 'U002', DATEADD(day, -3, CURRENT_TIMESTAMP()), PARSE_JSON('{"page": "home"}')),
+('E005', 'logout', 'U001', DATEADD(day, -3, CURRENT_TIMESTAMP()), PARSE_JSON('{}')),
+('E006', 'login', 'U005', DATEADD(day, -4, CURRENT_TIMESTAMP()), PARSE_JSON('{"device": "tablet"}')),
+('E007', 'purchase', 'U007', DATEADD(day, -4, CURRENT_TIMESTAMP()), PARSE_JSON('{"amount": 149.99}')),
+('E008', 'click', 'U009', DATEADD(day, -5, CURRENT_TIMESTAMP()), PARSE_JSON('{"page": "products"}'));
 -- ============================================
 -- PIPELINE_RUNS: Shows failed runs (reliability signal)
 -- ============================================
