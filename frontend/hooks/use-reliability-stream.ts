@@ -50,7 +50,16 @@ export function useReliabilityStream() {
 
         eventTypes.forEach((type) => {
             eventSource.addEventListener(type, (e: MessageEvent) => {
-                const data = JSON.parse(e.data)
+                if (!e.data || e.data === "undefined") return
+
+                let data
+                try {
+                    data = JSON.parse(e.data)
+                } catch (err) {
+                    console.warn("Failed to parse SSE data:", e.data)
+                    return
+                }
+
                 const timestamp = new Date().toLocaleTimeString()
 
                 // 1. Log event
@@ -101,13 +110,23 @@ export function useReliabilityStream() {
         })
 
         eventSource.onerror = () => {
-            setState(prev => ({
-                ...prev,
-                isRunning: false,
-                currentPhase: "ERROR",
-                error: "Connection lost"
-            }))
-            eventSource.close()
+            setState(prev => {
+                // If we have a final report, the stream likely ended naturally (server closed connection)
+                // Treat this as a success, not an error.
+                if (prev.finalReport && prev.finalReport.length > 0) {
+                    eventSource.close()
+                    return { ...prev, isRunning: false, currentPhase: "COMPLETE" }
+                }
+
+                // Otherwise, it's a genuine error
+                eventSource.close()
+                return {
+                    ...prev,
+                    isRunning: false,
+                    currentPhase: "ERROR",
+                    error: "Connection lost"
+                }
+            })
         }
 
     }, [])
@@ -120,9 +139,14 @@ export function useReliabilityStream() {
         setState(prev => ({ ...prev, isRunning: false }))
     }, [])
 
+    const dismissReport = useCallback(() => {
+        setState(prev => ({ ...prev, finalReport: null }))
+    }, [])
+
     return {
         state,
         runCheck,
-        stopCheck
+        stopCheck,
+        dismissReport
     }
 }

@@ -26,7 +26,7 @@ import { useReliabilityStream } from "@/hooks/use-reliability-stream"
 
 export default function Page() {
   const [selectedTables, setSelectedTables] = React.useState<string[]>([])
-  const { state, runCheck, stopCheck } = useReliabilityStream()
+  const { state, runCheck, stopCheck, dismissReport } = useReliabilityStream()
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
   // Auto-scroll logs
@@ -150,9 +150,9 @@ export default function Page() {
                     >
                       <span className="text-muted-foreground opacity-50 select-none w-16 text-right shrink-0">{log.timestamp}</span>
                       <span className={`font-bold shrink-0 w-32 ${log.type === 'error' ? 'text-destructive' :
-                          log.type === 'finding_detected' ? 'text-yellow-500' :
-                            log.type === 'complete' ? 'text-green-500' :
-                              'text-primary'
+                        log.type === 'finding_detected' ? 'text-yellow-500' :
+                          log.type === 'complete' ? 'text-green-500' :
+                            'text-primary'
                         }`}>{log.type}</span>
                       <span className="text-foreground/80 break-all opacity-80">
                         {JSON.stringify(log.data)}
@@ -226,7 +226,7 @@ export default function Page() {
                   <CheckCircle className="h-5 w-5 text-green-500" />
                   Reliability Report
                 </h2>
-                <Button variant="ghost" size="sm" onClick={() => state.finalReport = null}>
+                <Button variant="ghost" size="sm" onClick={dismissReport}>
                   Dismiss
                 </Button>
               </div>
