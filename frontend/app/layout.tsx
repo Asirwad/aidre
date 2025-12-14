@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   description: "AI Data Reliability Engineer Dashboard",
 };
 
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,7 +37,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
