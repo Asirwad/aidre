@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from contextlib import contextmanager
 from typing import Generator, Any, List, Dict
 
@@ -6,7 +7,10 @@ import snowflake.connector
 from snowflake.connector import SnowflakeConnection
 from dotenv import load_dotenv
 
-load_dotenv()
+# Explicitly load .env from backend directory
+_backend_dir = Path(__file__).parent.parent.parent
+_env_path = _backend_dir / ".env"
+load_dotenv(_env_path)
 
 class SnowflakeClient:
     """
